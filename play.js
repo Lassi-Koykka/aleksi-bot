@@ -1,23 +1,30 @@
+const path = require('path')
 const play = (fileName, vc) => {
     if (vc) {
-        vc.join().then(connection => {
-            const dispatcher = connection.play(fileName);
-
-            dispatcher.on('start', () => {
-                console.log(fileName + ' is now playing!');
+        fileBaseName = path.basename(fileName);
+        try {     
+            vc.join().then(connection => {
+                const dispatcher = connection.play(fileName);
+    
+                dispatcher.on('start', () => {
+                    console.log(fileBaseName + ' is now playing!');
+                });
+    
+                dispatcher.on('finish', () => {
+                    console.log(fileBaseName + ' has finished playing!');
+                    vc.leave();
+                });
+    
+                // Always remember to handle errors appropriately!
+                dispatcher.on('error', (error) => {
+                    console.log(error);
+                });
+    
             });
-
-            dispatcher.on('finish', () => {
-                console.log(fileName + ' has finished playing!');
-                vc.leave();
-            });
-
-            // Always remember to handle errors appropriately!
-            dispatcher.on('error', (error) => {
-                console.log(error);
-            });
-
-        });
+        } catch (error) {
+            console.log(error)
+            vc.leave()
+        }
     } else {
         message.reply('You need to join a voice channel first!');
     }
