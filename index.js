@@ -5,14 +5,14 @@ const path = require('path');
 
 const client = new Discord.Client();
 
-const videoDir = path.join(__dirname, 'videos');
-//Create dir for videos directory if it doesn't already exist;
-if(!fs.existsSync(videoDir)) {
-    fs.mkdirSync(videoDir);
-    console.log(`Video directory did not exist so one was created at: ${videoDir}\n`+ 
-    "Add the videoFiles you want available there.")
+const audioDir = path.join(__dirname, 'audio');
+//Create dir for audio directory if it doesn't already exist;
+if(!fs.existsSync(audioDir)) {
+    fs.mkdirSync(audioDir);
+    console.log(`Audio directory did not exist so one was created at: ${audioDir}\n`+ 
+    "Add the audioFiles you want available there.")
 } 
-const files = fs.readdirSync(videoDir).map(file => { return file.split('.')[0] })
+const files = fs.readdirSync(audioDir).map(file => { return file.split('.')[0] })
 
 const { prefix, token } = require('./config.json');
 
@@ -32,7 +32,7 @@ client.on('message', async message => {
 
     //Get the first argument as command
     const commandName = args.shift().toLowerCase();
-    const filePath = path.join(videoDir, commandName + '.mp4')
+    const filePath = path.join(audioDir, commandName + '.mp3')
 
     // HELP: List available commands
     // Or play the file with the same name as the command if it exists

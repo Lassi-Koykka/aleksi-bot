@@ -1,4 +1,10 @@
+const Discord = require('discord.js')
 const path = require('path')
+
+/**
+ * @param {string} fileName
+ * @param {Discord.VoiceChannel} vc
+ */
 const play = (fileName, vc) => {
     if (vc) {
         fileBaseName = path.basename(fileName);
