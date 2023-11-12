@@ -22,18 +22,15 @@ const play = (fileName, channel, message) => {
       adapterCreator: channel.guild.voiceAdapterCreator,
     });
 
+    const player = new AudioPlayer();
+    const subscription = connection.subscribe(player);
+
     try {
-      const player = new AudioPlayer();
-
-      const subscription = connection.subscribe(player);
-
       if (!subscription) {
         console.error("Failed to subscribe to audio player");
         connection.destroy();
         return;
       }
-
-      setTimeout(() => subscription.unsubscribe(), 5_000);
 
       const resource = createAudioResource(createReadStream(fileName));
       const fileBaseName = basename(fileName);
@@ -51,10 +48,12 @@ const play = (fileName, channel, message) => {
       player.on(AudioPlayerStatus.Idle, () => {
         console.log(fileBaseName + " has finished playing!");
         connection.destroy();
+        subscription?.unsubscribe();
       });
     } catch (error) {
       console.log(error);
       connection.destroy();
+      subscription.unsubscribe();
     }
   } else {
     message.reply("You need to join a voice channel first!");
