@@ -1,0 +1,6 @@
+services:
+  aleksi-bot:
+    build: .
+    env_file: .env
+    volumes:
+      - ./audio:/usr/src/bot
