@@ -15,7 +15,6 @@ import { basename } from "path";
  */
 const play = (fileName, channel, message) => {
   if (channel && channel.joinable) {
-    console.log("Channel guild", channel.guild);
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
